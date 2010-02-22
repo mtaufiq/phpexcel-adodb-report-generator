@@ -3,11 +3,9 @@ require '../model/mod_CashReceiptSummary.php';
 require '../controller/ctr_CashReceiptSummary.php'; 
 //no spaces ?>
 <?php //Creating the report
-$crbReport = new CashReceiptSummary();
-
 $details = array();
 $details['fileName'] = "CRBSummary";
-$details['format'] = "2003";
+$details['format'] = "2007";
 $details['creator'] = "duazo";
 $details['title'] = "Cash Receipt Summary";
 
@@ -17,7 +15,7 @@ $parameters['year'] = $_GET['year'];
 $parameters['user'] = $_GET['user'];
 $parameters['pass'] = $_GET['pass'];
 
-$crbReport->init($details , $parameters);
+$crbReport = new CashReceiptSummary($details , $parameters);
 $crbReport->create();
 ?>
 

@@ -2,7 +2,6 @@
 <?php
 
 class CashReceiptSummaryModel{
-	
 
 	public function get_summary($year,$month){
 		$db = new dbControl();

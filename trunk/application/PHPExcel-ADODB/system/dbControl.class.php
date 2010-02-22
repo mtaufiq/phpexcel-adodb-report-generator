@@ -18,7 +18,9 @@ class dbControl{
 	public function query($query){
 		$conn = $this->connect();
 		$result = $conn->execute($query);
+		
 		return $result;
+		
 	}
 	
 	

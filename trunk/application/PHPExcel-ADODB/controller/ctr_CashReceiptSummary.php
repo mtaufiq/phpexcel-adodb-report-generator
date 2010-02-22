@@ -5,7 +5,7 @@ class CashReceiptSummary{
 
 	public $param;
 
-	public function init($details , $parameters){
+	public function __construct($details , $parameters){
 		
 		$logger = new sfGuardLogger($parameters['user'],$parameters['pass']);
 		$this->report =  new Report();
@@ -44,7 +44,8 @@ class CashReceiptSummary{
 		$mod = new CashReceiptSummaryModel();
 		$result = $mod->get_summary($params['year'],$params['month']);
 		
-		$ctr = 8;
+		$ctr = 8; //starting cell
+		
 		while($row = $result->FetchRow())
 		  {
 		  $objPHPExcel->getActiveSheet()->SetCellValue('B'.$ctr, $row['account_desc'] );
@@ -53,9 +54,10 @@ class CashReceiptSummary{
 		  $ctr++;
 		  }
 		
+		if($ctr > 8){
 		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$ctr, '=SUM(C8:C'.($ctr-1).')');
 		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$ctr, '=SUM(D8:D'.($ctr-1).')');
-		
+		}
 		  
 		$this->report->end($this->report->getFormat());
 
