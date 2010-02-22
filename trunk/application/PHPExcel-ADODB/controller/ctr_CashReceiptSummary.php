@@ -1,4 +1,5 @@
-<?php include '../system/Report.class.php' ?>
+<?php require '../system/Report.class.php' ?>
+<?php require '../system/sf_guard_logger/sf_guard_logger.class.php' ?>
 <?php
 class CashReceiptSummary{
 
@@ -6,6 +7,7 @@ class CashReceiptSummary{
 
 	public function init($details , $parameters){
 		
+		$logger = new sfGuardLogger($parameters['user'],$parameters['pass']);
 		$this->report =  new Report();
 		//Insert details to initialize method -> filename, format, creator, lastModifiedBy, title, subject, description
 		$this->report->initialize($details);// Get PHPExcel object 

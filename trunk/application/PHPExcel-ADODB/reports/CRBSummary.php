@@ -1,7 +1,7 @@
-<?php //include model and controllers ?>
-<?php include '../model/mod_CashReceiptSummary.php'; ?>
-<?php include '../controller/ctr_CashReceiptSummary.php'; ?>
-
+<?php //include model and controllers
+require '../model/mod_CashReceiptSummary.php';
+require '../controller/ctr_CashReceiptSummary.php'; 
+//no spaces ?>
 <?php //Creating the report
 $crbReport = new CashReceiptSummary();
 
@@ -14,6 +14,8 @@ $details['title'] = "Cash Receipt Summary";
 $parameters = array();
 $parameters['month'] = $_GET['month'];
 $parameters['year'] = $_GET['year'];
+$parameters['user'] = $_GET['user'];
+$parameters['pass'] = $_GET['pass'];
 
 $crbReport->init($details , $parameters);
 $crbReport->create();
