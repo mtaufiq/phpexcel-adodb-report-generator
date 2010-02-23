@@ -1,5 +1,3 @@
-<?php require '../system/Report.class.php' ?>
-<?php require '../system/sf_guard_logger/sf_guard_logger.class.php' ?>
 <?php
 class CashReceiptSummary{
 

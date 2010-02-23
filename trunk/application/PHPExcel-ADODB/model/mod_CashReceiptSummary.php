@@ -1,4 +1,3 @@
-<?php require '../system/dbControl.class.php' ?>
 <?php
 
 class CashReceiptSummaryModel{

@@ -11,9 +11,6 @@ class Report{
 	
 		$this->log("Loading PHPExcel");
 
-		/** PHPExcel */
-		include 'Classes/PHPExcel.php';
-
 		/** PHPExcel_Writer_Excel2007 */
 		include 'Classes/PHPExcel/Writer/Excel2007.php';
 		
@@ -89,7 +86,7 @@ class Report{
 	}
 	
 	private function save($objWriter){
-		$objWriter->save('generated/'.$this->getFileName());
+		$objWriter->save('reports/generated/'.$this->getFileName());
 		$this->log("Done File Writing - ".$this->getFileName());
 	}
 	
@@ -104,6 +101,10 @@ class Report{
 	
 	public function setFileFormat($fileFormat){
 		$this->fileFormat = $fileFormat;
+	}
+	
+	public function getFileLink(){
+		return 'reports/generated/'.$this->fileName.$this->fileFormat;
 	}
 	
 	public function getFileName(){

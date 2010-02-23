@@ -1,4 +1,3 @@
-<?php include('adodb/adodb.inc.php');  ?>
 <?php
 
 class dbControl{

@@ -1,7 +1,6 @@
-<?php require '../system/dbControl.class.php' ?>
 <?php
 
-class CashReceiptSummaryModel{
+class CashDisbursementSummaryModel{
 
 	public function get_summary($year,$month){
 		$db = new dbControl();

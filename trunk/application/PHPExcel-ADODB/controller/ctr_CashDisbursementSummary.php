@@ -1,7 +1,5 @@
-<?php require '../system/Report.class.php' ?>
-<?php require '../system/sf_guard_logger/sf_guard_logger.class.php' ?>
 <?php
-class CashReceiptSummary{
+class CashDisbursementSummary{
 
 	public function __construct($details , $parameters){
 		
@@ -35,7 +33,7 @@ class CashReceiptSummary{
 		$objPHPExcel->getActiveSheet()->SetCellValue('D7', 'Debit');
 		$objPHPExcel->getActiveSheet()->SetCellValue('E7', 'Credit');
 
-		$mod = new CashReceiptSummaryModel();
+		$mod = new CashDisbursementSummaryModel();
 		$result = $mod->get_summary($params['year'],$params['month']);
 		
 		$ctr = 9; //starting cell B9
