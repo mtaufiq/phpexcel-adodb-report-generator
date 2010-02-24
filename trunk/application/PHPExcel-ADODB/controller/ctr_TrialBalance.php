@@ -11,7 +11,16 @@ class TrialBalance{
 		$this->param = $parameters;// Store parameters to report controller object
 		
 	}
-
+	
+	/*Modify this in report class
+	function charting($title,$val1,$val2,$color){
+		$url = file_get_contents("http://chart.apis.google.com/chart?chs=340x200&cht=p3&chl=$title&chd=t:$val1,$val2&chtt=Example+Chart&chco=$color");
+		$img = fopen("chart.png", 'w');
+		fwrite($img, $url);
+		fclose($img); 
+	}
+	*/
+	
 	public function create(){
 	
 		$objPHPExcel = $this->report->getPHPExcelObj();
@@ -28,10 +37,27 @@ class TrialBalance{
 		
 		$worksheet = $objPHPExcel->getActiveSheet();
 		
+		/*Modify this in report class - embed charts
+		$this->charting("PHP|Java",50,50,"00ff00,0000ff");
+		$objPHPExcel->setActiveSheetIndex(0);
+		$objDrawing = new PHPExcel_Worksheet_Drawing();
+		$objDrawing->setName('Example Chart');
+		$objDrawing->setDescription('Example Chart');
+		$objDrawing->setPath('chart.png');
+		$objDrawing->setCoordinates('H6');
+		$objDrawing->setWorksheet($objPHPExcel->getActiveSheet());
+		*/
+		
+		$worksheet->mergeCells('B2:D2');
+		$worksheet->mergeCells('B3:D3');
+		$worksheet->mergeCells('B4:D4');
+		
+		$worksheet->getStyle('B2:B4')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+		
 		$worksheet->SetCellValue('B2', 'Penta Insurance Broker Services Inc.');
 		$worksheet->SetCellValue('B3', 'Trial Balance');
 		$monthName = date("F", mktime(0, 0, 0, $params['month'], 10)); 
-		$worksheet->SetCellValue('B4', 'As of '.$monthName.', '.$params['year']);
+		$worksheet->SetCellValue('B4', 'As of '.$monthName.' '.$params['day'].', '.$params['year']);
 		
 		$worksheet->SetCellValue('C6', 'Debit');
 		$worksheet->SetCellValue('D6', 'Credit');
@@ -48,27 +74,21 @@ class TrialBalance{
 		$acct_type = "";
 		$totalsC = array();
 		$totalsD = array();
+		
 		while($row = $result->FetchRow()){
-
+		
 				//if($row['Debit'] > 0 || $row['Credit'] > 0){//Show to display rows with values
 					
-					if($acct_type <> $row['Account Type']){
+					if($acct_type <> $row['Account Type']) {
 					
-						if($acct_type <> "" /*Processing just started)*/){
+						if($acct_type <> ""/*Processing just started)*/){
 						
-							
-							$totals[] = $ctr;
-							$totStart = $balStart + 1;
-							$totEnd = $ctr - 1;
-							$worksheet->getStyle('B'.$ctr)->getFont()->setBold(true);
-							$worksheet->SetCellValue('B'.$ctr, "Total ".$acct_type);
-							$getSumOfC = 'SUM(C'.$totStart.':C'.$totEnd.')';
-							$getSumOfD = 'SUM(D'.$totStart.':D'.$totEnd.')';
-							$worksheet->SetCellValue('C'.$ctr, '='.$getSumOfC);	
-							$worksheet->SetCellValue('D'.$ctr, '='.$getSumOfD);
-							$totalsC[] = 'C'.$ctr;
-							$totalsD[] = 'D'.$ctr;
-							$ctr++;
+						$totStart = $balStart + 1;
+						$totEnd = $ctr - 1;
+						$this->showAcctTotal($acct_type,$ctr,$totStart,$totEnd,$totalsC,$totalsD,$worksheet);
+						$totalsC[] = 'C'.$ctr;
+						$totalsD[] = 'D'.$ctr;
+						$ctr++;
 							
 						}
 					
@@ -76,71 +96,80 @@ class TrialBalance{
 						$worksheet->SetCellValue('B'.$ctr, $acct_type);
 						$worksheet->getStyle('B'.$ctr)->getFont()->setBold(true);
 						$balStart = $ctr;
+					
 						$ctr++;
+						
 					}
 		
 					$balance = $row['Debit'] - $row['Credit'];
 					$worksheet->SetCellValue('B'.$ctr, $row['Account']);
-					$worksheet->SetCellValue('C'.$ctr, $row['Debit']);
-					$worksheet->SetCellValue('D'.$ctr, $row['Credit']);
-					//$col = $this->checkAccountType($row['Account Type']);
-					//$col = $this->checkNegativeBalance($balance,$col,$row['Account Type']);
-					//$worksheet->SetCellValue($col.$ctr, abs($balance));
+					$col = $this->checkAccountType($row['Account Type']);
+					$col = $this->checkNegativeBalance($balance,$col,$row['Account Type']);
+					$worksheet->SetCellValue($col.$ctr, abs($balance));
+					$revCol = ( $col == 'C' ? 'D' : 'C');
+					$worksheet->SetCellValue($revCol.$ctr, 0);
 					$ctr++;
 					
 				/*}*///Show to display rows with values
-		
+				
+				if($ctr == 45){//Page Break every 50 rows
+					$worksheet->setBreak( 'B' . $ctr, PHPExcel_Worksheet::BREAK_ROW );
+				}
 		}
-		
 		
 		$totStart = $balStart + 1;
 		$totEnd = $ctr - 1;
-		$worksheet->getStyle('B'.$ctr)->getFont()->setBold(true);
-		$worksheet->SetCellValue('B'.$ctr, "Total ".$acct_type);
-		$getSumOfC = 'SUM(C'.$totStart.':C'.$totEnd.')';
-		$getSumOfD = 'SUM(D'.$totStart.':D'.$totEnd.')';
-		$worksheet->SetCellValue('C'.$ctr, '='.$getSumOfC);	
-		$worksheet->SetCellValue('D'.$ctr, '='.$getSumOfD);
+		$this->showAcctTotal($acct_type,$ctr,$totStart,$totEnd,$totalsC,$totalsD,$worksheet);
 		$totalsC[] = 'C'.$ctr;
-		$totalsD[] = 'D'.$ctr;		
+		$totalsD[] = 'D'.$ctr;
 		$ctr++;
 		
+		
 		$worksheet->SetCellValue('B'.$ctr,'Total');
-	
-		$sumFormulaC = "=";
 		
-		foreach($totalsC as $index):
-			
-				$sumFormulaC .= $index;
-				if(end($totalsC) <> $index){
-					$sumFormulaC .= "+";
-				}
-				
-		endforeach;
+		$worksheet->SetCellValue('C'.$ctr,$this->showSumFormula($totalsC));
+		$worksheet->SetCellValue('D'.$ctr,$this->showSumFormula($totalsD));
 		
-		$sumFormulaD = "=";
-		foreach($totalsD as $index):
-			
-				$sumFormulaD .= $index;
-				if(end($totalsD) <> $index){
-					$sumFormulaD .= "+";
-				}
-				
-		endforeach;
-		
-		
-		$worksheet->SetCellValue('C'.$ctr,$sumFormulaC);
-		$worksheet->SetCellValue('D'.$ctr,$sumFormulaD);
+		$worksheet->getStyle('B'.$ctr.':'.'D'.$ctr)->getFont()->getColor()->setRGB('FFFFFF');
+		$worksheet->getStyle('B'.$ctr.':'.'D'.$ctr)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$worksheet->getStyle('B'.$ctr.':'.'D'.$ctr)->getFill()->getStartColor()->setRGB('666666');
 		
 		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
-		
 		$this->report->end($this->report->getFormat());
 
 	}
+	
+	private function showSumFormula($totals){
+		
+		$formula = "=";
+		foreach($totals as $index):
+				$formula .= $index;
+				if(end($totals) <> $index){
+					$formula .= "+";
+				}
+		endforeach;
+		
+		return $formula;
+	
+	}
 
+	private function showAcctTotal($acct_type,$ctr,$totStart,$totEnd,$totalsC,$totalsD,$worksheet){
+						
+			$worksheet->getStyle('B'.$ctr.':'.'D'.$ctr)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+			$worksheet->getStyle('B'.$ctr.':'.'D'.$ctr)->getFill()->getStartColor()->setRGB('999000');
+			
+			$worksheet->getStyle('B'.$ctr)->getFont()->setBold(true);
+			$worksheet->SetCellValue('B'.$ctr, "Total ".$acct_type);
+			
+			$getSumOfC = 'SUM(C'.$totStart.':C'.$totEnd.')';
+			$getSumOfD = 'SUM(D'.$totStart.':D'.$totEnd.')';
+			$worksheet->SetCellValue('C'.$ctr, '='.$getSumOfC);	
+			$worksheet->SetCellValue('D'.$ctr, '='.$getSumOfD);
+			
+	}						
 	
 	private function checkAccountType($account){
-		if ($account == 'Assets' || $account == 'Income'){
+		if ($account == 'Assets' || $account == 'Income' || $account == 'Expense'){
 			return 'C'; //column for Debit
 		}else{
 			return 'D';

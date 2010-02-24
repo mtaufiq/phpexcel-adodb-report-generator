@@ -12,13 +12,16 @@ class Report{
 		$this->log("Loading PHPExcel");
 
 		/** PHPExcel_Writer_Excel2007 */
-		include 'Classes/PHPExcel/Writer/Excel2007.php';
+		include 'PHPExcel/PHPExcel/Writer/Excel2007.php';
 		
 		/** PHPExcel_Writer_Excel5 - for 2003 and below */
-		include 'Classes/PHPExcel/Writer/Excel5.php';
+		include 'PHPExcel/PHPExcel/Writer/Excel5.php';
 		
 		/** PHPExcel_HTML Writer*/
-		include 'Classes/PHPExcel/Writer/HTML.php';
+		include 'PHPExcel/PHPExcel/Writer/HTML.php';
+		
+		/*Input Output*/
+		include 'PHPExcel/PHPExcel/IOFactory.php';
 		
 		$this->log("Loading details:".
 				   "<ul>".

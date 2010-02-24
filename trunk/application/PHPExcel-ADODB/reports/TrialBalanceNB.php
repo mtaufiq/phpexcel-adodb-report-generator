@@ -1,9 +1,9 @@
 <?php //Creating the report
 $details = array();
-$details['fileName'] = "TrialBalance";
+$details['fileName'] = "TrialBalanceNB";
 $details['format'] = "2007";
 $details['creator'] = "duazo";
-$details['title'] = "Trial Balance";
+$details['title'] = "Trial Balance (Do not show balance)";
 
 $parameters = array();
 $parameters['user'] = $_GET['user'];
@@ -13,7 +13,7 @@ $parameters['month'] = $_GET['month'];
 $parameters['year'] = $_GET['year'];
 $parameters['day'] = $_GET['day'];
 
-$trialBalance = new TrialBalance($details , $parameters);
+$trialBalance = new TrialBalanceNB($details , $parameters);
 $trialBalance->create();
 ?>
 
@@ -26,7 +26,7 @@ $trialBalance->create();
 </head>
 <body>
 <div id="header">
-<h1>Trial Balance Report</h1>
+<h1>Trial Balance Report - (With no balances)</h1>
 </div>
 
 <div id="reportLog">

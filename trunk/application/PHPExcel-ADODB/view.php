@@ -4,10 +4,10 @@
 /*System files - DO NOT REMOVE*/
 
 //ADODB Classes
-require('system/adodb5/adodb.inc.php'); 
+require('system/ADODB/adodb.inc.php'); 
 
 //PHPExcel Classes
-require('system/Classes/PHPExcel.php');
+require('system/PHPExcel/PHPExcel.php');
 
 /*Default Report and Database Controller Classes*/
 require('system/dbControl.class.php');
