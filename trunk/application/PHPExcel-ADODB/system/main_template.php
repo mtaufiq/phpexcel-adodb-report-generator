@@ -7,7 +7,7 @@
 </head>
 <body>
 <div id="header">
-<h1><?php echo $view['details']['title'] ?></h1>
+<h1>> <?php echo $view['details']['title'] ?></h1>
 </div>
 
 <div id="reportLog">

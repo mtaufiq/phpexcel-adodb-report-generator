@@ -3,11 +3,9 @@ class CashReceiptSummary{
 
 	public function __construct($details , $parameters){
 		
-		$logger = new sfGuardLogger($parameters['user'],$parameters['pass']);
 		$this->report =  new Report();
-		//Insert details to initialize method -> filename, format, creator, lastModifiedBy, title, subject, description
-		$this->report->initialize($details);// Get PHPExcel object 
-		$this->param = $parameters;// Store parameters to report controller object
+		$this->report->initialize($details);
+		$this->param = $parameters;
 		
 	}
 

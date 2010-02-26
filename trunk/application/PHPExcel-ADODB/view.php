@@ -1,5 +1,5 @@
 <?php
-/*VIEW CONTROLLER*/
+/*FRONT CONTROLLER*/
 
 /*System files - DO NOT REMOVE*/
 
@@ -13,8 +13,10 @@ require('system/PHPExcel/PHPExcel.php');
 require('system/dbControl.class.php');
 require('system/Report.class.php');
 
-/*OTHER FILES - You can include files here*/
+/*Perform Security Check here*/
 include ('system/sf_guard_logger/sf_guard_logger.class.php');
+$logger = new sfGuardLogger($_GET['user'],$_GET['pass']); //for symfony
+/*Comment all of these to stop security check*/
 
 /*GET ALL PARAMETERS*/
 while ($param = current($_GET)) {

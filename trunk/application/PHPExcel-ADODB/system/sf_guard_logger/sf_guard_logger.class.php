@@ -24,7 +24,7 @@ class sfGuardLogger{
 						);
 
 		if($rs->RecordCount() == 0){
-			header("Location: ../system/sf_guard_logger/loginError.php");
+			header("Location: system/sf_guard_logger/loginError.php");
 		}
 	
 	}
