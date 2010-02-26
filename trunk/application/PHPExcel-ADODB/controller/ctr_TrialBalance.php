@@ -171,6 +171,7 @@ class TrialBalance{
 	public function view(){
 		$view['html'] = $this->report->view(); //load html components
 		$view['logs'] = $this->report->getLogs(); //load logs
+		$view['details'] = $this->report->getDetails(); //load logs
 		return $view;
 	}
 

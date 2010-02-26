@@ -16,11 +16,18 @@ require('system/Report.class.php');
 /*OTHER FILES - You can include files here*/
 include ('system/sf_guard_logger/sf_guard_logger.class.php');
 
-/*Specific  Report files - name passed as parameter*/
-$file = $_GET['rep'];
+/*GET ALL PARAMETERS*/
+while ($param = current($_GET)) {
+    $parameters[key($_GET)] = $param;
+    next($_GET);
+}
 
-require 'model/mod_'.$file.'.php';
-require 'controller/ctr_'.$file.'.php'; 
-include 'reports/'.$file.'.php';
+/*Specific  Report files - name passed as parameter*/
+$report = $_GET['rep'];
+
+require 'model/mod_'.$report.'.php';
+require 'controller/ctr_'.$report.'.php'; 
+include 'reports/'.$report.'.php';
+include 'system/main_template.php';
 
 ?>
