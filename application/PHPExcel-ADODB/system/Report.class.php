@@ -6,6 +6,7 @@ class Report{
 	public $format;
 	public $PHPExcelObj;
 	public $logs;
+	public $details;
 	
 	public function initialize($details){
 	
@@ -23,6 +24,7 @@ class Report{
 		/** PHPExcel_PDF Writer */
 		include 'PHPExcel/PHPExcel/IOFactory.php';
 		
+		$this->details = $details;
 		
 		$this->log("Loading details:".
 				   "<ul>".
@@ -53,9 +55,6 @@ class Report{
 	}
 	
 	public function end($format){
-	
-		$objWriter;
-	
 		switch ($format) {
 			case '2007':
 				$this->log("Saving in Excel 2007 format (.xlsx)");
@@ -71,6 +70,7 @@ class Report{
 				$this->log("Saving in Adobe PDF format (.pdf)");
 				$this->setFileFormat(".pdf");
 				$objWriter = PHPExcel_IOFactory::createWriter($this->getPHPExcelObj(), 'PDF');
+				break;
 			default:
 				$this->log("File not saved! - Format invalid");
 		}
@@ -83,11 +83,8 @@ class Report{
 		$objWriter = new PHPExcel_Writer_HTML($this->getPHPExcelObj());
 		
 		$html['header'] = $objWriter->generateHTMLHeader();
-		
 		$html['style'] = $objWriter->generateStyles(true); // do not write <style> and </style>
-
 		$html['body'] = $objWriter->generateSheetData();
-		
 		$html['footer'] = $objWriter->generateHTMLFooter();
 	
 		return $html;
@@ -130,6 +127,9 @@ class Report{
 	
 	public function getLogs(){
 		return $this->logs;
+	}
+	public function getDetails(){
+		return $this->details;
 	}
 
 }
