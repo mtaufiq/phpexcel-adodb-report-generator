@@ -2,7 +2,7 @@
 $details = array();
 $details['fileName'] = "TrialBalance";
 $details['format'] = $parameters['format'];
-$details['creator'] = "duazo";
+$details['creator'] = $parameters['real_user'];
 $details['title'] = "Trial Balance";
 
 /*

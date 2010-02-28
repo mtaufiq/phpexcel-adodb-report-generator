@@ -1,6 +1,9 @@
-<?php
+<?php if ( !isset($GLOBALS['base_url'])) exit('No direct script access allowed');
 
-class sfGuardLogger{
+/* 
+SECURITY LOGGER FOR Symfony sfGuard
+*/
+class sfGuardLogger{//returns real username :)
 
 	public $password;
 	public $user;
@@ -22,6 +25,9 @@ class sfGuardLogger{
 							WHERE MD5(`username`) = '".$user."'
 							AND MD5(`password`) = '".$pass."'"
 						);
+		while($row = $rs->FetchRow()){
+			$this->user = $row['username'];
+		}
 
 		if($rs->RecordCount() == 0){
 			header("Location: system/sf_guard_logger/loginError.php");

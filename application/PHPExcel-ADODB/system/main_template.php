@@ -1,3 +1,5 @@
+<?php if ( !isset($GLOBALS['base_url'])) exit('No direct script access allowed');?>
+
 <!-- HTML PART - EDIT HTML HERE -->
 <!-- ALL VARIABLES CREATED ON THE REPORT FILE WILL BE VISIBLE HERE -->
 <html>
@@ -10,15 +12,6 @@
 <div id="header">
 <h1 class="report_name"><?php echo $view['details']['title'] ?></h1>
 </div>
-
-<div id="reportLog">
-<fieldset><legend>Report Log</legend>
-<?php foreach( $view['logs'] as $log ): ?>
-<?php echo $log ?>
-<?php endforeach; ?>
-</fieldset>
-</div>
-
 <div id="reportView">
 
 <fieldset><legend>Report Preview - [
@@ -30,6 +23,15 @@
 
 <?php echo $view['html']['body']; ?>
 
+</fieldset>
+</div>
+
+
+<div id="reportLog">
+<fieldset><legend>Report Log</legend>
+<?php foreach( $view['logs'] as $log ): ?>
+<?php echo $log ?>
+<?php endforeach; ?>
 </fieldset>
 </div>
 

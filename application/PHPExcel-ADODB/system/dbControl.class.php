@@ -1,4 +1,5 @@
-<?php
+<?php if ( !isset($GLOBALS['base_url'])) exit('No direct script access allowed');
+
 
 class dbControl{
 
