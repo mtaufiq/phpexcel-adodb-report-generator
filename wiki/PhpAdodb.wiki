@@ -1,4 +1,4 @@
-PHPExcel-ADODB-LibChart Report Generator is a PHP application/framework designed to generate excel spreadsheets and pdf files easily with the help of the PHPExcel Library and the ADODB database functions.
+P.A.L (PHPExcel-ADODB-LibChart) Report Generator is a PHP application/framework designed to generate excel spreadsheets and pdf files easily with the help of the PHPExcel Library and the ADODB database functions.
 
 = Introduction =
 
