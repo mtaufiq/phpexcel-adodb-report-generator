@@ -1,3 +1,7 @@
+body{
+	margin: 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
+	padding: 0;
+}
 #header h1{
 	text-align: left;
 	border-bottom-width: thin;

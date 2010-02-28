@@ -1,6 +1,7 @@
 <?php
 class Report{
 
+	public $formats;
 	public $fileName;
 	public $fileFormat;
 	public $format;
@@ -23,6 +24,11 @@ class Report{
 		
 		/** PHPExcel_PDF Writer */
 		include 'PHPExcel/PHPExcel/IOFactory.php';
+		
+		/*Initialize format array*/
+		$this->formats[] = "xls";
+		$this->formats[] = "xlsx";
+		$this->formats[] = "pdf";
 		
 		$this->details = $details;
 		
@@ -54,29 +60,44 @@ class Report{
 		
 	}
 	
-	public function end($format){
-		switch ($format) {
-			case '2007':
-				$this->log("Saving in Excel 2007 format (.xlsx)");
-				$this->setFileFormat(".xlsx");
-				$objWriter = new PHPExcel_Writer_Excel2007($this->getPHPExcelObj());
-				break;
-			case '2003':
-				$this->log("Saving in Excel 2003 format (.xls)");
-				$this->setFileFormat(".xls");
-				$objWriter = new PHPExcel_Writer_Excel5($this->getPHPExcelObj());
-				break;
-			case 'pdf':
-				$this->log("Saving in Adobe PDF format (.pdf)");
-				$this->setFileFormat(".pdf");
-				$objWriter = PHPExcel_IOFactory::createWriter($this->getPHPExcelObj(), 'PDF');
-				break;
-			default:
-				$this->log("File not saved! - Format invalid");
-		}
+	public function end(){
+		if(empty($this->format)){
 		
-		$this->save($objWriter);
-				
+			foreach($this->formats as $format){
+				$objWriter = $this->checkFormatAndSave($format);
+				$this->save($objWriter);
+			}
+		}else{
+			
+			$objWriter = $this->checkFormatAndSave($this->format);
+			$this->save($objWriter);
+			
+		}			
+	}
+	
+	private function checkFormatAndSave($format){
+		
+		switch ($format) {
+				case 'xlsx':
+					$this->log("Saving in Excel 2007 format (.xlsx)");
+					$this->setFileFormat(".xlsx");
+					$objWriter = new PHPExcel_Writer_Excel2007($this->getPHPExcelObj());
+					break;
+				case 'xls':
+					$this->log("Saving in Excel 2003 format (.xls)");
+					$this->setFileFormat(".xls");
+					$objWriter = new PHPExcel_Writer_Excel5($this->getPHPExcelObj());
+					break;
+				case 'pdf':
+					$this->log("Saving in Adobe PDF format (.pdf)");
+					$this->setFileFormat(".pdf");
+					$objWriter = PHPExcel_IOFactory::createWriter($this->getPHPExcelObj(), 'PDF');
+					break;
+				default:
+					$this->log("File not saved! - Format invalid ( ".$format." )");
+			}
+			
+		return $objWriter;
 	}
 	
 	public function view(){
@@ -109,7 +130,7 @@ class Report{
 	}
 	
 	public function getFileLink(){
-		return 'reports/generated/'.$this->fileName.$this->fileFormat;
+		return 'reports/generated/'.$this->fileName;
 	}
 	
 	public function getFileName(){
@@ -130,6 +151,17 @@ class Report{
 	}
 	public function getDetails(){
 		return $this->details;
+	}
+	
+	public function getFormatLinks(){
+		
+		if(empty($this->format)){
+			return $this->formats;
+		}else{
+			$singleArr[] = $this->format;
+			return $singleArr;
+		}
+		
 	}
 
 }

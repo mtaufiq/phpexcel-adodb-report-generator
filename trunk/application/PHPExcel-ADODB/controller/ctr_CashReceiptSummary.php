@@ -25,7 +25,7 @@ class CashReceiptSummary{
 		$objPHPExcel->getActiveSheet()->SetCellValue('B2', 'Penta Insurance Broker Services Inc.');
 		$objPHPExcel->getActiveSheet()->SetCellValue('B3', 'CASH RECEIPTS');
 		$monthName = date("F", mktime(0, 0, 0, $params['month'], 10)); 
-		$objPHPExcel->getActiveSheet()->SetCellValue('B4', 'For the month ended '.$monthName.', '.$params['year']);
+		$objPHPExcel->getActiveSheet()->SetCellValue('B4', 'For the month ended '.$monthName.' '.$params['day'].', '.$params['year']);
 
 		$objPHPExcel->getActiveSheet()->SetCellValue('B7', 'Summary');
 		$objPHPExcel->getActiveSheet()->SetCellValue('D7', 'Debit');
@@ -61,7 +61,7 @@ class CashReceiptSummary{
 		$objPHPExcel->getActiveSheet()->getStyle('B2:B3')->getFont()->setBold(TRUE); 
 		$objPHPExcel->getActiveSheet()->getStyle('B7:E7')->getFont()->setBold(TRUE);
 		
-		$this->report->end($this->report->getFormat());
+		$this->report->end();
 
 	}
 	
