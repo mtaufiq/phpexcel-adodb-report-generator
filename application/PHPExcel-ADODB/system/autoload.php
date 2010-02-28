@@ -11,7 +11,11 @@ require('system/ADODB/adodb.inc.php');
 //PHPExcel Classes
 require('system/PHPExcel/PHPExcel.php');
 
-/*Default Report and Database Controller Classes*/
+//Libchart Classes
+include ('system/Libchart/classes/libchart.php');
+
+/*Default Report,Chart and Database Controller Classes*/
+require('system/Charting.class.php');
 require('system/dbControl.class.php');
 require('system/Report.class.php');
 
