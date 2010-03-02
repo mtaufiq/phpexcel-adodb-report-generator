@@ -30,9 +30,9 @@ class Report{
 		include 'PHPExcel/PHPExcel/IOFactory.php';
 		
 		/*Initialize format array*/
-		$this->formats[] = "xls";
-		$this->formats[] = "xlsx";
-		$this->formats[] = "pdf";
+		$this->formats['xls'] = "Excel 2003";
+		$this->formats['xlsx'] = "Excel 2007";
+		$this->formats['pdf'] = "Adobe PDF";
 		
 		$this->details = $details;
 		
@@ -51,12 +51,12 @@ class Report{
 
 		// Set properties
 		$this->log("Setting properties of report");
-		$objPHPExcel->getProperties()->setCreator($details['creator']);
-		$objPHPExcel->getProperties()->setLastModifiedBy($details['creator']);
-		$objPHPExcel->getProperties()->setTitle($details['title']);
-		$objPHPExcel->getProperties()->setSubject($details['title']." report");
-		$objPHPExcel->getProperties()->setDescription($details['title']." report generated using PHPExcel and ADODB");
-		
+		$objPHPExcel->getProperties()->setCreator($details['creator'])
+									 ->setLastModifiedBy($details['creator'])
+									 ->setTitle($details['title'])
+   									 ->setSubject($details['title']." report")
+ 									 ->setDescription($details['title']." report generated using PHPExcel and ADODB");
+									
 		$this->fileName = $details['fileName'];
 		$this->format = $details['format'];
 
@@ -67,7 +67,7 @@ class Report{
 	public function end(){
 		if(empty($this->format)){
 		
-			foreach($this->formats as $format){
+			foreach($this->formats as $format => $formatName){
 				$objWriter = $this->checkFormatAndSave($format);
 				$this->save($objWriter);
 			}
@@ -162,7 +162,7 @@ class Report{
 		if(empty($this->format)){
 			return $this->formats;
 		}else{
-			$singleArr[] = $this->format;
+			$singleArr[$this->format] = $this->formats[$this->format];
 			return $singleArr;
 		}
 		

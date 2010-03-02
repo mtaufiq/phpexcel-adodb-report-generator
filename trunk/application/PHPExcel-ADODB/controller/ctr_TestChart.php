@@ -31,14 +31,15 @@ class TestChart{
 		$dataSample['January'] = array("January",200);
 		$dataSample['February'] = array("February",156);
 		$dataSample['March'] = array("March",100);
+		$dataSample['April'] = array("April",120);
 		
 		
-		$chartSampleGen = new ChartControl("Sample","Sample Graph");
+		$chartSampleGen = new ChartControl("Sample","Sample Graph/Chart Title");
 		$chartSampleGen->createVerticalBar(600,250);
 		$chartSampleGen->setData($dataSample);
-		$chartSamplePath = $chartSampleGen->render($worksheet, 'B7');
+		$chartSamplePath = $chartSampleGen->render($worksheet, 'B5');
 		
-		$worksheet->SetCellValue('B10', 'Sample Graph');
+		$worksheet->SetCellValue('B7', 'Graph caption, explanations');
 		
 		$worksheet->getColumnDimension('B')->setAutoSize(true);
 		$worksheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
