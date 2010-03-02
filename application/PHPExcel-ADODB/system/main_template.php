@@ -11,15 +11,16 @@
 <body>
 <div id="header">
 <h1 class="report_name"><?php echo $view['details']['title'] ?></h1>
-</div>
-<div id="reportView">
-
-<fieldset><legend>Report Preview - [
-<?php foreach($objReport->report->getFormatLinks() as $format): ?>
-<a href="<?php echo $objReport->report->getFileLink().'.'.$format ?>" target="_self"><img src="web/images/icn_<?php echo $format ?>.png" width="20px" height="20px" ></a>&nbsp;
+<div id="sub_header">
+Download as: 
+<?php foreach($objReport->report->getFormatLinks() as $format => $formatName): ?>
+<a href="<?php echo $objReport->report->getFileLink().'.'.$format ?>" target="_self"><img src="web/images/icn_<?php echo $format ?>.png" width="20px" height="20px" title="Download as <?php echo $formatName ?>"></a>&nbsp;
 <?php endforeach; ?>
+</div>
+</div>
 
-]</legend>
+<div id="reportView">
+<fieldset><legend>Report Preview</legend>
 
 <?php echo $view['html']['body']; ?>
 
@@ -36,7 +37,7 @@
 </div>
 
 <div id="footer">
-PHPExcel-ADODB Report Generator by Jeff
+P.A.L (PHPExcel-ADODB-LibChart) Report Generator by Jeff
 </div>
 </body>
 </html>

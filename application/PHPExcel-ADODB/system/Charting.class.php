@@ -1,7 +1,7 @@
 <?php
 class ChartControl{
 	
-	private static $chart_url = 'reports/generated/charts/';
+	private $chart_url = 'reports/generated/charts/';
 	private $chart;
 	private $title;
 	private $height;
@@ -38,7 +38,7 @@ class ChartControl{
 	
 	public function render($worksheet, $cell){
 		
-		$img_url = $chart_url.$this->name.".png";
+		$img_url = $this->chart_url.$this->name.".png";
 		
 		$this->worksheet = $worksheet;
 		$this->cell = $cell;
