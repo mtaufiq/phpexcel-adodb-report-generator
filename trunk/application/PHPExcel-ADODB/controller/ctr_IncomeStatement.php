@@ -29,35 +29,51 @@ class IncomeStatement{
 		$incomeRows = $DB->get_Income($params['year'],$params['month']);
 		$expenseRows = $DB->get_Expense($params['year'],$params['month']);
 		
-		$worksheet->SetCellValue('B1', 'Penta Insurance Company');
-		$worksheet->SetCellValue('B2', 'Income Statement');
+		$worksheet->SetCellValue('B2', 'Penta Insurance Company');
+		$worksheet->SetCellValue('B3', 'Income Statement');
 		$monthName = date("F", mktime(0, 0, 0, $params['month'], 10)); 
-		$worksheet->SetCellValue('B3', 'For the end of '.$monthName);
+		$worksheet->SetCellValue('B4', 'For the end of '.$monthName);
 		
-		$ctr = 5;
-		
+		$ctr = 6;
+		$incomeStart = $ctr;
 		while($row = $incomeRows->FetchRow()){
 		
-		$worksheet->SetCellValue('B'.$ctr, $row['Account']);
-		$worksheet->SetCellValue('C'.$ctr, $row['Debit']);
-		$worksheet->SetCellValue('D'.$ctr, $row['Credit']);
+			$worksheet->SetCellValue('B'.$ctr, $row['Account']);
+			$worksheet->SetCellValue('C'.$ctr, $row['Debit']);
+			$worksheet->SetCellValue('D'.$ctr, $row['Credit']);
 		
-		$ctr++;
-		
+			$ctr++;
+			
 		}
 		
-		$ctr = $ctr + 1;
+		$incomeEnd = $ctr - 1;//dpat "=Sum(C.$incomeStart.":C".$incomeEnd."")
+		$worksheet->SetCellValue('B'.($ctr), 'Total Income');
+		$worksheet->SetCellValue('C'.($ctr), "=SUM(C".$incomeStart.":C".$incomeEnd.")");
+		$worksheet->SetCellValue('D'.($ctr), "=SUM(D".$incomeStart.":D".$incomeEnd.")");
+		
+		$ctr = $ctr + 2;
+		$expenseStart = $ctr;
 		
 		while($row = $expenseRows->FetchRow()){
 		
-		$worksheet->SetCellValue('B'.$ctr, $row['Account']);
-		$worksheet->SetCellValue('C'.$ctr, $row['Debit']);
-		$worksheet->SetCellValue('D'.$ctr, $row['Credit']);
+			$worksheet->SetCellValue('B'.$ctr, $row['Account']);
+			$worksheet->SetCellValue('C'.$ctr, $row['Debit']);
+			$worksheet->SetCellValue('D'.$ctr, $row['Credit']);
 		
-		$ctr++;
+			$ctr++;
 		
 		}
-	
+		$expenseEnd = $ctr -1;
+		$worksheet->SetCellValue('B'.($ctr), 'Total Expenses');
+		$worksheet->SetCellValue('C'.($ctr), "=SUM(C".$expenseStart.":C".$expenseEnd.")");
+		$worksheet->SetCellValue('D'.($ctr), "=SUM(D".$expenseStart.":D".$expenseEnd.")");
+		$ctr = $ctr + 2;
+		
+		$worksheet->SetCellValue('B'.$ctr, 'Net Income');
+		$worksheet->SetCellValue('C'.($ctr), "=SUM(C".$incomeStart.":C".$incomeEnd.":C".$expenseStart.":C".$expenseEnd.")");
+		
+		
+		
 		
 		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
 		$this->report->end($this->report->getFormat());
