@@ -5,6 +5,7 @@
 <html>
 <title><?php echo $view['details']['title'] ?>-PHPExcel-ADODB Report</title>
 <head>
+<LINK REL="SHORTCUT ICON" HREF="web/images/favicon.ico">
 <LINK REL=StyleSheet HREF="web/css/main.css" TYPE="text/css">
 <?php echo $view['html']['style']; ?>
 </head>
