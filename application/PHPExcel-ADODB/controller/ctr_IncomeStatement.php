@@ -70,7 +70,9 @@ class IncomeStatement{
 		$ctr = $ctr + 2;
 		
 		$worksheet->SetCellValue('B'.$ctr, 'Net Income');
-		$worksheet->SetCellValue('C'.($ctr), "=SUM(C".$incomeStart.":C".$incomeEnd.":C".$expenseStart.":C".$expenseEnd.")");
+		$totalIncome = 'SUM(C'.$incomeStart.':C'.$incomeEnd.')';
+		$totalExpense =  'SUM(C'.$expenseStart.':C'.$expenseEnd.')';
+		$worksheet->SetCellValue('C'.($ctr), ($totalIncome + $totalExpense));
 		
 		
 		
