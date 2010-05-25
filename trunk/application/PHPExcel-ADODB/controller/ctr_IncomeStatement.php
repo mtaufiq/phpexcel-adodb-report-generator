@@ -51,6 +51,8 @@ class IncomeStatement{
 		$worksheet->SetCellValue('C'.($ctr), "=SUM(C".$incomeStart.":C".$incomeEnd.")");
 		$worksheet->SetCellValue('D'.($ctr), "=SUM(D".$incomeStart.":D".$incomeEnd.")");
 		
+		$rowTotalIncome = $ctr;
+		
 		$ctr = $ctr + 2;
 		$expenseStart = $ctr;
 		
@@ -67,19 +69,32 @@ class IncomeStatement{
 		$worksheet->SetCellValue('B'.($ctr), 'Total Expenses');
 		$worksheet->SetCellValue('C'.($ctr), "=SUM(C".$expenseStart.":C".$expenseEnd.")");
 		$worksheet->SetCellValue('D'.($ctr), "=SUM(D".$expenseStart.":D".$expenseEnd.")");
+		$rowExpenseTotal = $ctr;
+		
 		$ctr = $ctr + 2;
 		
 		$worksheet->SetCellValue('B'.$ctr, 'Net Income');
-		$totalIncome = 'SUM(C'.$incomeStart.':C'.$incomeEnd.')';
-		$totalExpense =  'SUM(C'.$expenseStart.':C'.$expenseEnd.')';
-		$worksheet->SetCellValue('C'.($ctr), ($totalIncome + $totalExpense));
+		$totalIncome = 'SUM(C'.$incomeStart.':D'.$incomeEnd.')';
+		$totalExpense =  'SUM(C'.$expenseStart.':D'.$expenseEnd.')';
+		$worksheet->SetCellValue('C'.($ctr), '='.$totalIncome.'-'.$totalExpense);
 		
+		$worksheet->mergeCells('C'.($ctr).':D'.($ctr));
+		$worksheet->getStyle('C'.($ctr).':D'.($ctr))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		
+		$worksheet->getStyle('B'.($ctr).':D'.($ctr))->getFont()->getColor()->setRGB('FFFFFF');
+		$worksheet->getStyle('B'.($ctr).':D'.($ctr))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$worksheet->getStyle('B'.($ctr).':D'.($ctr))->getFill()->getStartColor()->setRGB('666666');
 		
+		$worksheet->getStyle('B'.($rowTotalIncome).':D'.($rowTotalIncome))->getFont()->getColor()->setRGB('FFFFFF');
+		$worksheet->getStyle('B'.($rowTotalIncome).':D'.($rowTotalIncome))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$worksheet->getStyle('B'.($rowTotalIncome).':D'.($rowTotalIncome))->getFill()->getStartColor()->setRGB('666666');
+		
+		$worksheet->getStyle('B'.($rowExpenseTotal).':D'.($rowExpenseTotal))->getFont()->getColor()->setRGB('FFFFFF');
+		$worksheet->getStyle('B'.($rowExpenseTotal).':D'.($rowExpenseTotal))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$worksheet->getStyle('B'.($rowExpenseTotal).':D'.($rowExpenseTotal))->getFill()->getStartColor()->setRGB('666666');
 		
 		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
 		$this->report->end($this->report->getFormat());
-		
 		
 	}
 
