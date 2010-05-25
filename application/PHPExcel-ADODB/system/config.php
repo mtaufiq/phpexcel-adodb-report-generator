@@ -10,6 +10,6 @@ $base_url = $system['base_url'];
 $system['host'] = "localhost";
 $system['user'] = "root";
 $system['pass'] = "";
-$system['db'] = "penta-account";
+$system['db'] = "penta-int";
 
 ?>

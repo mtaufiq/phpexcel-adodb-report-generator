@@ -5,7 +5,7 @@ class dbControl{
 	var $host = "localhost";
 	var $user = "root";
 	var $pass = "";
-	var $db = "penta-account";
+	var $db = "penta-int";
 	
 	public function connect(){
 		$conn = &ADONewConnection('mysql'); 
