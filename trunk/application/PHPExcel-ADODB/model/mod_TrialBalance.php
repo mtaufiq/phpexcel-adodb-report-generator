@@ -6,18 +6,18 @@ class TrialBalanceModel{
 		$db = new dbControl();
 		
 		$query = "SELECT
-					account.account_desc AS 'Account',
-					account.account_type AS 'Account Type',
-					SUM(general_ledger.crb_debit + general_ledger.cdb_debit + general_ledger.jv_debit) AS 'Debit',
-					SUM(general_ledger.crb_credit + general_ledger.cdb_credit + general_ledger.jv_credit) AS 'Credit'
+					acct_account.account_desc AS 'Account',
+					acct_account.account_type AS 'Account Type',
+					SUM(acct_general_ledger.crb_debit + acct_general_ledger.cdb_debit + acct_general_ledger.jv_debit) AS 'Debit',
+					SUM(acct_general_ledger.crb_credit + acct_general_ledger.cdb_credit + acct_general_ledger.jv_credit) AS 'Credit'
 				  FROM
-					account, general_ledger
+					acct_account, acct_general_ledger
 				  WHERE
-					general_ledger.account_id = account.id
+					acct_general_ledger.acct_account_id = acct_account.id
 					AND month <= ".$month."
 					AND year <= ".$year."
 				  GROUP BY
-					account.id";
+					acct_account.id";
 		
 		return $db->query($query);
 
