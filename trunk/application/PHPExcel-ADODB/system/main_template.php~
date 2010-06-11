@@ -74,7 +74,7 @@
 
 <!--Add in here parameters that you want to use, but you want it to be hidden-->
 <?php if($par_key == "user" || $par_key == "pass"): ?>
-<tr><td></td><td><input type="hidden" name="<?php echo $par_key ?>" value="<?php echo $par_val ?>" /></td></tr>
+<tr><td><?php echo $par_key ?></td><td><input type="hidden" name="<?php echo $par_key ?>" value="<?php echo $par_val ?>" /></td></tr>
 <?php endif; ?>
 
 <?php endforeach; ?>
