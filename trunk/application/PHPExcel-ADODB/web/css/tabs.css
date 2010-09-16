@@ -40,7 +40,7 @@ html ul.tabs li.active, html ul.tabs li.active a:hover  { /*--Makes sure that th
 .tab_container {
 	border: 1px solid #999;
 	border-top: none;
-	overflow: hidden;
+	overflow: scroll;
 	clear: both;
 	float: left; width: 100%;
 	background: #fff;
@@ -48,4 +48,6 @@ html ul.tabs li.active, html ul.tabs li.active a:hover  { /*--Makes sure that th
 .tab_content {
 	padding: 20px;
 	font-size: 0.9em;
+	width:200%;
+	overflow:visible;
 }

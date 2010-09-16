@@ -32,6 +32,7 @@ class TestChart{
 		$dataSample['February'] = array("February",156);
 		$dataSample['March'] = array("March",100);
 		$dataSample['April'] = array("April",120);
+				$dataSample['Jeff'] = array("Jeff",190);
 		
 		
 		$chartSampleGen = new ChartControl("Sample","Sample Graph/Chart Title");
