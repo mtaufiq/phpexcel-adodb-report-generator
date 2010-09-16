@@ -15,11 +15,15 @@ class dbControl{
 	}
 	
 	public function query($query){
-		$conn = $this->connect();
-		$result = $conn->execute($query);
-		
-		return $result;
-		
+		try{
+			$conn = $this->connect();
+			$result = $conn->execute($query);
+			
+			if(empty($result) == 1 ) throw new Exception('Query Error');
+			return $result;
+		}catch(Exception $e){
+			echo 'You have a query error, check your mod_ file';
+		}
 	}
 	
 	

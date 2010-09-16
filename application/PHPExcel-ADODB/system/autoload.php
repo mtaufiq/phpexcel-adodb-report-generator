@@ -21,9 +21,9 @@ require('system/Report.class.php');
 
 /*INCLUDE OWN SECURITY HERE*/
 /*Perform Security Check here*/
-include ('system/sf_guard_logger/sf_guard_logger.class.php');
-$logger = new sfGuardLogger($_GET['user'],$_GET['pass']); //for symfony
-$parameters['real_user'] = $logger->getUser();
+//include ('system/sf_guard_logger/sf_guard_logger.class.php');
+//$logger = new sfGuardLogger($_GET['user'],$_GET['pass']); //for symfony
+//$parameters['real_user'] = $logger->getUser();
 /*Comment all of these to stop security check*/
 
 /*GET ALL PARAMETERS*/
