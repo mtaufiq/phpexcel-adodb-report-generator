@@ -173,10 +173,18 @@ class WorkingSheet{ //Class name of report - must be same as the rep parameter
 		$lastMonthCol = 'AD';
         $todateCol = 'AE';
         
+        $subTotal = array();
+        
+        $start = $curRow;
+       
         foreach($balance_sheet_info as $title => $info):
+            
+            $start_title = $curRow;
+        
             $sheet->SetCellValue($titleCol.$curRow,$title);
             $sheet->getStyle($titleCol.$curRow)->applyFromArray($this->cell_styles["header"]);
             $curRow += 1;
+            
                 foreach($info as $account_info):
                     
                     $sheet->SetCellValue($titleCol.$curRow,$account_info[0]);
@@ -194,6 +202,9 @@ class WorkingSheet{ //Class name of report - must be same as the rep parameter
                             $past_sum_str .= $this->TBAcctMap[$account][2].","; 
      
                         endforeach;
+                        
+                        $cur_sum_str = substr($cur_sum_str,0,-1);
+                        $past_sum_str = substr($past_sum_str,0,-1);
                         
                         if(count($account_info[1]) <= 0){
                             $cur_sum_str .= "0";
@@ -236,9 +247,23 @@ class WorkingSheet{ //Class name of report - must be same as the rep parameter
                     $curRow += 1;
                     
                 endforeach;
-                
+            
+            //echo $todateCol.$start_title."-".$todateCol.$curRow;
+            
+            $subTotal[] = $curRow;
+            
+            $sheet->SetCellValue($todateCol.$curRow,"=SUM(".$todateCol.($start_title+1).":".$todateCol.($curRow-1).")");
+            $sheet->SetCellValue($thisMonthCol.$curRow,"=SUM(".$todateCol.($start_title+1).":".$thisMonthCol.($curRow-1).")");
+            $sheet->SetCellValue($lastMonthCol.$curRow,"=SUM(".$todateCol.($start_title+1).":".$lastMonthCol.($curRow-1).")");
             $curRow+=1;
         endforeach;
+
+        $end = $curRow-2;
+
+       $sheet->SetCellValue($todateCol.$curRow,$this->getSumString($subTotal,$todateCol));
+       $sheet->SetCellValue($thisMonthCol.$curRow, $this->getSumString($subTotal,$thisMonthCol));
+       $sheet->SetCellValue($lastMonthCol.$curRow, $this->getSumString($subTotal,$lastMonthCol));       
+    
         
         
    }
